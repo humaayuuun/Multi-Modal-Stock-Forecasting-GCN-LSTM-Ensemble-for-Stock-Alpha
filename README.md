@@ -1,6 +1,4 @@
-# GraphAlpha: Decoding Market Structure
-
-**A Hybrid GCN-LSTM Ensemble for Structural Alpha Generation**
+# A Hybrid GCN-LSTM Ensemble for Structural Alpha Generation**
 
 ### Project Overview
 It is a multi-modal algorithmic trading system designed to predict stock market trends (specifically **NVDA**) by decoding the hidden *structure* of market data.

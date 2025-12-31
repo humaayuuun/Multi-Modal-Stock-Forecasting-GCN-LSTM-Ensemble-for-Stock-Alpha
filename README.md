@@ -13,7 +13,7 @@ The strategy was rigorously validated using **Walk-Forward Optimization** (Expan
 
 ### A. Stationary Feature Engineering
 * **The Problem:** Deep learning models suffer from "gradient saturation" when asset prices drift significantly (e.g., NVDA rallying from $150 to $1000).
-* **The Solution:** Replaced raw OHLCV inputs with **Log-Returns** and **Rolling Volatility** (20-day window). This creates a statistically stationary feature space ($\mu \approx 0, \sigma \approx 1$), allowing the model to generalize patterns across vastly different price levels.
+* **The Solution:** Replaced raw OHLCV inputs with **Log-Returns** and **Rolling Volatility** (20-day window). This creates a statistically stationary feature space, allowing the model to generalize patterns across vastly different price levels.
 
 ### B. Dynamic Temporal Knowledge Graph
 * **The Problem:** Standard sentiment analysis ignores the *structure* of the market (e.g., a TSMC supply shock impacting NVDA).

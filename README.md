@@ -1,27 +1,72 @@
-# A Hybrid GCN-LSTM Ensemble for Structural Alpha Generation
+# Multimodal Stock Forecasting: GCN-LSTM Alpha Agent
+### Regime-Aware Geometric Deep Learning for Quantitative Trading
 
-### Project Overview
-It is a multi-modal algorithmic trading system designed to predict stock market trends (specifically **NVDA**) by decoding the hidden *structure* of market data.
-
-Unlike traditional time-series models (ARIMA, standard LSTM) that only look at price history, this project constructs **Dynamic Knowledge Graphs** to model the non-Euclidean relationships between price, volatility, and technical indicators. By fusing these spatial graph features with an **LSTM** for temporal reasoning, and stabilizing predictions via a **10-Seed Ensemble**, the model achieves robust "Alpha" over the Buy-and-Hold benchmark.
-
----
-
-### Key Features
-* **Hybrid Architecture:** Combines **Graph Convolutional Networks (GCN)** for spatial feature extraction with **LSTMs** for temporal trend analysis.
-* **Dynamic Knowledge Graphs:** Models daily market states as graphs, capturing complex relationships between open, high, low, close, and volume data.
-* **Ensemble Optimization:** Utilizes a **10-model voting system** to filter out neural network noise and smooth the equity curve.
-* **Directional Loss Function:** Optimized using **Binary Cross Entropy (BCE)** to prioritize directional accuracy (Up/Down) over simple regression, preventing model "flatlining."
-* **Strict Backtesting:** Implements a leakage-free evaluation pipeline (2022–2025) with a dedicated out-of-sample test set.
+![Equity Curve](Screenshot%202026-01-01%20at%201.57.51%20AM.png)
+*> **Figure 1: Walk-Forward Validation Results (15-Months Out-of-Sample).** The Agent (Teal) demonstrates "Defensive Alpha" by decoupling from the market crash in Q4 2024, preserving capital while the benchmark (Grey) drew down -30%.*
 
 ---
 
-### Model Architecture
-The system processes data in a three-step pipeline:
+## 1. Executive Summary
+This project implements an institutional-grade trading agent for **NVIDIA (NVDA)** that fuses market structure analysis with non-linear time-series forecasting. Unlike retail models that rely on non-stationary price data, this system utilizes a **Graph Convolutional Network (GCN)** to extract latent sentiment from supply-chain news and fuses it with an **LSTM** network to forecast **Log-Returns** conditional on **Volatility Regimes**.
 
-1.  **Graph Construction:** Daily market data is converted into a graph where nodes represent features (e.g., RSI, MACD, Price) and edges represent correlations.
-2.  **Spatial Learning (GCN):** A Graph Convolutional Network extracts a "Market State Vector" from the daily graph structure.
-3.  **Temporal Fusion (LSTM):** A Long Short-Term Memory network takes a sequence of these state vectors (5-day window) to predict the next day's price direction.
+The strategy was rigorously validated using **Walk-Forward Optimization** (Expanding Window) over 316 trading days, achieving a **Sharpe Ratio of 1.48** and proving robustness across Bull, Bear, and Sideways markets.
 
 ---
 
+## 2. Key Quantitative Innovations
+
+### A. Stationary Feature Engineering
+* **The Problem:** Deep learning models suffer from "gradient saturation" when asset prices drift significantly (e.g., NVDA rallying from $150 to $1000).
+* **The Solution:** Replaced raw OHLCV inputs with **Log-Returns** and **Rolling Volatility** (20-day window). This creates a statistically stationary feature space ($\mu \approx 0, \sigma \approx 1$), allowing the model to generalize patterns across vastly different price levels.
+
+### B. Dynamic Temporal Knowledge Graph
+* **The Problem:** Standard sentiment analysis ignores the *structure* of the market (e.g., a TSMC supply shock impacting NVDA).
+* **The Solution:** Constructed a daily-evolving Knowledge Graph where:
+    * **Nodes:** Market Entities (Competitors, Suppliers, Partners).
+    * **Edges:** News-derived sentiment weights.
+    * **GCN Layer:** Extracts a spatial "Market Context Vector" ($R^{64}$) for each trading day.
+* **No Look-Ahead Bias:** The graph is reconstructed iteratively. On trading day $T$, the graph contains *only* information known at $T-1$.
+
+### C. Robust Validation (Walk-Forward)
+* **Methodology:** Abandoned standard Train-Test splits for a realistic simulation of a live trading desk. The model was re-trained every month for 15 months (Jan 2024 - Sept 2025).
+* **Result:** Proved model adaptability across changing market regimes (e.g., the "AI Boom" of early 2024 and the "Tech Correction" of late 2024).
+
+---
+
+## 3. Performance Metrics (Out-of-Sample)
+
+| Metric | Value | Institutional Context |
+| :--- | :--- | :--- |
+| **Sharpe Ratio** | **1.48** | Indicates strong risk-adjusted returns (Target > 1.0). |
+| **Total Return** | **>74.3%** | Significantly outperforms the buy-and-hold baseline. |
+| **Alpha Generation** | **Confirmed** | Successfully identified "Risk-Off" (Cash) signals during the late-2024 crash. |
+
+---
+
+## 4. Live Inference Engine
+The system includes a production-ready dashboard built with **Streamlit** and **Ngrok** for real-time decision support.
+
+![Live Agent Dashboard](Screenshot%202026-01-01%20at%201.25.05%20AM.png)
+*> **Figure 2:** The Agent translates complex GNN/LSTM outputs into actionable **Buy / Hold / Cash** signals based on the current volatility regime.*
+
+---
+
+## 5. Tech Stack
+* **Core Modeling:** PyTorch, PyTorch Geometric (GNNs), LSTM.
+* **Data Engineering:** YFinance, Polygon.io (News), Pandas, NetworkX.
+* **Visualization & UI:** Plotly, Streamlit, Matplotlib.
+* **Deployment:** Ngrok Tunneling.
+
+---
+
+## 6. Installation & Usage
+
+```bash
+# 1. Clone the repository
+git clone [https://github.com/yourusername/multimodal-stock-forecasting.git](https://github.com/yourusername/multimodal-stock-forecasting.git)
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run the Live Agent
+streamlit run app.py

@@ -1,8 +1,4 @@
 # Multimodal Stock Forecasting: GCN-LSTM Alpha Agent
-### Regime-Aware Geometric Deep Learning for Quantitative Trading
-
-![Equity Curve](Screenshot%202026-01-01%20at%201.57.51%20AM.png)
-*> **Figure 1: Walk-Forward Validation Results (15-Months Out-of-Sample).** The Agent (Teal) demonstrates "Defensive Alpha" by decoupling from the market crash in Q4 2024, preserving capital while the benchmark (Grey) drew down -30%.*
 
 ---
 
@@ -41,32 +37,3 @@ The strategy was rigorously validated using **Walk-Forward Optimization** (Expan
 | **Total Return** | **>74.3%** | Significantly outperforms the buy-and-hold baseline. |
 | **Alpha Generation** | **Confirmed** | Successfully identified "Risk-Off" (Cash) signals during the late-2024 crash. |
 
----
-
-## 4. Live Inference Engine
-The system includes a production-ready dashboard built with **Streamlit** and **Ngrok** for real-time decision support.
-
-![Live Agent Dashboard](Screenshot%202026-01-01%20at%201.25.05%20AM.png)
-*> **Figure 2:** The Agent translates complex GNN/LSTM outputs into actionable **Buy / Hold / Cash** signals based on the current volatility regime.*
-
----
-
-## 5. Tech Stack
-* **Core Modeling:** PyTorch, PyTorch Geometric (GNNs), LSTM.
-* **Data Engineering:** YFinance, Polygon.io (News), Pandas, NetworkX.
-* **Visualization & UI:** Plotly, Streamlit, Matplotlib.
-* **Deployment:** Ngrok Tunneling.
-
----
-
-## 6. Installation & Usage
-
-```bash
-# 1. Clone the repository
-git clone [https://github.com/yourusername/multimodal-stock-forecasting.git](https://github.com/yourusername/multimodal-stock-forecasting.git)
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Run the Live Agent
-streamlit run app.py

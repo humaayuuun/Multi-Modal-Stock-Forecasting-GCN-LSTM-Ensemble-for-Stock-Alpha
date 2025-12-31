@@ -9,7 +9,7 @@ The strategy was rigorously validated using **Walk-Forward Optimization** (Expan
 
 ---
 
-## 2. Key Quantitative Innovations
+## 2. Methodology
 
 ### A. Stationary Feature Engineering
 * **The Problem:** Deep learning models suffer from "gradient saturation" when asset prices drift significantly (e.g., NVDA rallying from $150 to $1000).
